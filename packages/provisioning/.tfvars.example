@@ -1,0 +1,12 @@
+# azure acocunt info
+azure_tenant_id=""
+azure_subscription_id=""
+
+# BAZK Machine specs
+machine_admin_password=""
+
+# Bazk phala and ipfs setup
+ias_spid=""
+ias_api_key=""
+
+## Check all variables on ./varaibles.tf

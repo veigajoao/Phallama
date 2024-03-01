@@ -1,0 +1,18 @@
+{
+    "name": "phallama",
+    "version": "1.0.0",
+    "author": "jasso",
+    "private": true,
+    "repository": "https://github.com/veigajoao/Phallama",
+    "scripts": {
+      "app": "yarn workspace @bazk/app",
+      "gramine": "yarn workspace @bazk/gramine",
+      "provisioning": "yarn workspace @bazk/provisioning"
+    },
+    "workspaces": {
+      "packages": [
+        "packages/*"
+      ]
+    }
+  }
+  
