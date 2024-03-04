@@ -5,5 +5,7 @@
 /node.manifest.sgx
 /node.sig
 /bin
+/.ollama
+ollama-linux-amd64
 challenge
 curl

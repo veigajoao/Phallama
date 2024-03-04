@@ -41,10 +41,10 @@ resource "azurerm_virtual_machine" "bazk" {
     host        = azurerm_public_ip.bazk.ip_address
   }
 
-  provisioner "file" {
-    source      = "../gramine/scripts/"
-    destination = "."
-  }
+  # provisioner "file" {
+  #   source      = "../gramine/scripts/"
+  #   destination = "."
+  # }
 
   # Provisioner block for remote-exec
   provisioner "remote-exec" {

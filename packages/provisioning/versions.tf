@@ -12,10 +12,10 @@ terraform {
 
   # The "backend" block configures the backend to store the Terraform state. In this case, it is configured to use the azurerm backend.
   # docs: https://developer.hashicorp.com/terraform/language/settings/backends/azurerm
-  backend "azurerm" {
-    resource_group_name  = "phallama"
-    storage_account_name = "phallama-account"
-    key                  = "phallama.terraform.tfstate"
-    container_name       = "phallama-terraform-container"
-  }
+  # backend "azurerm" {
+  #   resource_group_name  = "phallama"
+  #   storage_account_name = "phallama-account"
+  #   key                  = "phallama.terraform.tfstate"
+  #   container_name       = "phallama-terraform-container"
+  # }
 }

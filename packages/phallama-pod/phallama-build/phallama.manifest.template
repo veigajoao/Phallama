@@ -1,9 +1,9 @@
 [libos]
-entrypoint = "./node"
+entrypoint = "./ollama-linux-amd64"
 
 [loader]
 entrypoint = "file:{{ libos }}"
-insecure__use_cmdline_argv = true
+argv = ["serve", "serve"]
 log_level = "debug"
 
 [sys]
@@ -16,6 +16,9 @@ LD_LIBRARY_PATH = "/lib:/lib/x86_64-linux-gnu"
 MALLOC_ARENA_MAX = "1"
 IAS_API_KEY = { passthrough = true }
 SGX_ENABLED = { passthrough = true }
+OLLAMA_MODELS = "/.ollama"
+HOME = "/"
+
 
 [[fs.mounts]]
 type = "chroot"
@@ -29,18 +32,13 @@ uri = "file:/etc"
 
 [[fs.mounts]]
 type = "chroot"
-path = "/data"
-uri = "file:data"
-
-[[fs.mounts]]
-type = "chroot"
-path = "/app"
-uri = "file:app"
+path = "/tmp"
+uri = "file:/etc"
 
 [sgx]
-debug = false
+debug = true
 nonpie_binary = true
-enclave_size = "2G"
+enclave_size = "8G"
 max_threads = 16
 remote_attestation = "{{ ra_method }}"
 
@@ -50,31 +48,18 @@ ra_client_spid = "{{ ra_client_spid }}"
 {% endif %}
 
 trusted_files = [
-  "file:node",
-  "file:curl",
-  "file:/usr/bin/curl",
+  "file:ollama-linux-amd64",
+  "file:.ollama/blobs/",
+  "file:.ollama/manifests/",
   "file:{{ libos }}",
-  "file:{{ libdir }}",
-  "file:app/",
-  "file:app/bin/contribute",
-  "file:app/bin/new",
-  "file:app/bin/verify_contribution",
-  "file:app/bin/new_constrained",
-  "file:app/bin/compute_constrained",
-  "file:app/bin/verify_transform_constrained",
-  "file:app/bin/prepare_phase2",
-  "file:app/ceremonies/",
+  "file:{{ libdir }}"
 ]
 
 allowed_files = [
-  "file:/etc/hosts",
-  "file:/etc/resolv.conf",
-  "file:/etc/ssl/openssl.cnf",
-  "file:/etc/nsswitch.conf",
-  "file:/etc/passwd",
-  "file:/etc/host.conf",
-  "file:/etc/gai.conf",
-  "file:/etc/ssl/certs/ca-certificates.crt",
-  "file:index.js",
+  "file:.ollama/history",
+  "file:.ollama/id_ed25519",
+  "file:.ollama/id_ed25519.pub",
   "file:data/",
+  "file:/tmp/",
+  "file:/etc/",
 ]

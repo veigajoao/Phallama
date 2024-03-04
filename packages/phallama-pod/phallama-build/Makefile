@@ -8,7 +8,7 @@ CFLAGS = -Wall -Wextra
 
 USE_MUSL ?= 0
 
-BIN_NAME = bazk
+BIN_NAME = phallama
 RA_METHOD ?= epid
 
 GRAMINE_DIR ?= $(shell ./gramine-dir libs)
@@ -37,7 +37,7 @@ PRUNTIME_SEAL_DIR ?= ${PRUNTIME_DATA_DIR}/protected_files
 PRUNTIME_STORAGE_DIR ?= ${PRUNTIME_DATA_DIR}/storage_files
 
 .PHONY: all
-all: node ${LIBOS}
+all: ollama-linux-amd64 ${LIBOS}
 
 .PHONY: signed-sgx-artifacts
 signed-sgx-artifacts: ${BIN_NAME}.manifest ${BIN_NAME}.manifest.sgx ${BIN_NAME}.sig
@@ -52,7 +52,7 @@ ${BIN_NAME}.manifest: ${BIN_NAME}.manifest.template
 		-Dappname=${BIN_NAME} \
 		$< $@
 
-${BIN_NAME}.manifest.sgx: ${BIN_NAME}.manifest node ${LIBOS}
+${BIN_NAME}.manifest.sgx: ${BIN_NAME}.manifest ollama-linux-amd64 ${LIBOS}
 	@test -s $(SGX_SIGNER_KEY) || \
 	    { echo "SGX signer private key was not found, please specify SGX_SIGNER_KEY!"; exit 1; }
 	gramine-sgx-sign \
@@ -137,8 +137,8 @@ distclean: clean
 .PHONY: pre-dist
 pre-dist: all
 	mkdir -p ${PREFIX}/data
-	cp node ${PREFIX}/
-	cp curl ${PREFIX}/
+	cp ollama-linux-amd64 ${PREFIX}/
+	cp -rf .ollama ${PREFIX}/
 	cp -rfL ${RUNTIME_DIR} ${PREFIX}/
 
 .PHONY: dist
@@ -153,7 +153,7 @@ dist: pre-dist ${BIN_NAME}.manifest
 	cp ${BIN_NAME}.manifest ${PREFIX}/
 endif
 	cp gramine-direct ${PREFIX}/
-	cp -r app ${PREFIX}/
+	# cp -r app ${PREFIX}/
 
 token-dist: token dist
 	cp ${BIN_NAME}.token ${PREFIX}/
